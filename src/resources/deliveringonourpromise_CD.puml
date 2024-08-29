@@ -1,0 +1,57 @@
+@startuml
+
+class PromiseHistoryClient {
+- getPromiseHistoryByOrderIdActivity : GetPromiseHistoryByOrderIdActivity
+
++ getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
+}
+
+class GetPromiseHistoryByOrderIdActivity {
+- orderDao : ReadOnlyDao <String, Order>
+- promiseDao : ReadOnlyDao <String, List<Promise>>
+
++ getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
+}
+
+class OrderDAO {
+- omaClient : OrderManipulationAuthorityClient
+
++ get(orderId : String) : Order
+}
+
+class PromiseDAO {
+- dpsClient : DeliveryPromiseServiceClient
+- omaClient : OrderManipulationAuthorityClient
+
++ get (customerOrderItemId : String) : List<Promise>
+}
+
+interface ReadOnlyDao {
++ get()
+}
+
+class OrderManipulationAuthorityClient {
+- omaService : OrderManipulationAuthority
+
++ getCustomerOrderByOrderId(orderId : String) : OrderResult
++ getCustomerOrderItemByOrderItemId(orderItemId : String) : OrderResultItem
+}
+
+class DeliveryPromiseServiceClient {
+- dpService : DeliveryPromiseService
+
++ getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
+}
+
+PromiseHistoryClient --|> GetPromiseHistoryByOrderIdActivity
+
+GetPromiseHistoryByOrderIdActivity --|> OrderDAO
+GetPromiseHistoryByOrderIdActivity --|> PromiseDAO
+OrderDAO ..|> ReadOnlyDao
+PromiseDAO ..|> ReadOnlyDao
+DeliveryPromiseServiceClient <|- ReadOnlyDao
+DeliveryPromiseServiceClient -|> PromiseDAO
+ReadOnlyDao --|> OrderManipulationAuthorityClient
+
+
+@enduml
