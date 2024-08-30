@@ -49,15 +49,15 @@ class DeliveryPromiseServiceClient {
 }
 
 App -|> PromiseHistoryClient
-PromiseHistoryClient o-- GetPromiseHistoryByOrderIdActivity
+PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
 
 GetPromiseHistoryByOrderIdActivity o-- OrderDao
 GetPromiseHistoryByOrderIdActivity o-- PromiseDao
 OrderDao .|> ReadOnlyDao
 ReadOnlyDao <|. PromiseDao
 DeliveryPromiseServiceClient --o PromiseDao
-PromiseDao --|> OrderManipulationAuthorityClient
-OrderDao --|> OrderManipulationAuthorityClient
+PromiseDao o-- OrderManipulationAuthorityClient
+OrderDao o-- OrderManipulationAuthorityClient
 
 
 @enduml
