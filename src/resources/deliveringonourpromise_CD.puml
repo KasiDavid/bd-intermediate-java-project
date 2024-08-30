@@ -21,6 +21,7 @@ class OrderDao {
 - omaClient : OrderManipulationAuthorityClient
 
 + get(orderId : String) : Order
+- convertToOrderItem(orderResultItem : OrderResultItem) : OrderItem
 }
 
 class PromiseDao {
@@ -48,14 +49,14 @@ class DeliveryPromiseServiceClient {
 }
 
 App -|> PromiseHistoryClient
-PromiseHistoryClient --|> GetPromiseHistoryByOrderIdActivity
+PromiseHistoryClient --o GetPromiseHistoryByOrderIdActivity
 
-GetPromiseHistoryByOrderIdActivity ..|> OrderDao
-GetPromiseHistoryByOrderIdActivity ..|> PromiseDao
+GetPromiseHistoryByOrderIdActivity o-- OrderDao
+GetPromiseHistoryByOrderIdActivity o-- PromiseDao
 OrderDao ..|> ReadOnlyDao
 PromiseDao ..|> ReadOnlyDao
 DeliveryPromiseServiceClient <|- ReadOnlyDao
-DeliveryPromiseServiceClient -|> PromiseDao
+DeliveryPromiseServiceClient --o PromiseDao
 ReadOnlyDao --|> OrderManipulationAuthorityClient
 
 
