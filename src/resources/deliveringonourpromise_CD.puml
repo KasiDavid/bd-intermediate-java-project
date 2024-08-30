@@ -1,5 +1,9 @@
 @startuml
 
+class App{
++ getPromiseHistoryClient() : PromiseHistoryClient
+}
+
 class PromiseHistoryClient {
 - getPromiseHistoryByOrderIdActivity : GetPromiseHistoryByOrderIdActivity
 
@@ -13,13 +17,13 @@ class GetPromiseHistoryByOrderIdActivity {
 + getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
 }
 
-class OrderDAO {
+class OrderDao {
 - omaClient : OrderManipulationAuthorityClient
 
 + get(orderId : String) : Order
 }
 
-class PromiseDAO {
+class PromiseDao {
 - dpsClient : DeliveryPromiseServiceClient
 - omaClient : OrderManipulationAuthorityClient
 
@@ -43,14 +47,15 @@ class DeliveryPromiseServiceClient {
 + getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
 }
 
+App -|> PromiseHistoryClient
 PromiseHistoryClient --|> GetPromiseHistoryByOrderIdActivity
 
-GetPromiseHistoryByOrderIdActivity --|> OrderDAO
-GetPromiseHistoryByOrderIdActivity --|> PromiseDAO
-OrderDAO ..|> ReadOnlyDao
-PromiseDAO ..|> ReadOnlyDao
+GetPromiseHistoryByOrderIdActivity ..|> OrderDao
+GetPromiseHistoryByOrderIdActivity ..|> PromiseDao
+OrderDao ..|> ReadOnlyDao
+PromiseDao ..|> ReadOnlyDao
 DeliveryPromiseServiceClient <|- ReadOnlyDao
-DeliveryPromiseServiceClient -|> PromiseDAO
+DeliveryPromiseServiceClient -|> PromiseDao
 ReadOnlyDao --|> OrderManipulationAuthorityClient
 
 
