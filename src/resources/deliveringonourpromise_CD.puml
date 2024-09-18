@@ -11,8 +11,8 @@ class PromiseHistoryClient {
 }
 
 class GetPromiseHistoryByOrderIdActivity {
-- orderDao : ReadOnlyDao <String, Order>
-- promiseDao : ReadOnlyDao <String, List<Promise>>
+- orderDao : ReadOnlyDao<String, Order>
+- promiseDao : ReadOnlyDao<String, Promise[]>
 
 + getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
 }
@@ -28,11 +28,11 @@ class PromiseDao {
 - dpsClient : DeliveryPromiseServiceClient
 - omaClient : OrderManipulationAuthorityClient
 
-+ get (customerOrderItemId : String) : List<Promise>
++ get (customerOrderItemId : String) : Promise[]
 }
 
 interface ReadOnlyDao {
-+ get()
++ get(orderId : I)
 }
 
 class OrderManipulationAuthorityClient {
@@ -48,16 +48,29 @@ class DeliveryPromiseServiceClient {
 + getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
 }
 
-App -|> PromiseHistoryClient
+App -> PromiseHistoryClient
 PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
 
-GetPromiseHistoryByOrderIdActivity o-- OrderDao
-GetPromiseHistoryByOrderIdActivity o-- PromiseDao
+GetPromiseHistoryByOrderIdActivity o--> OrderDao
+GetPromiseHistoryByOrderIdActivity o--> PromiseDao
 OrderDao .|> ReadOnlyDao
 ReadOnlyDao <|. PromiseDao
-DeliveryPromiseServiceClient --o PromiseDao
+PromiseDao o-> DeliveryPromiseServiceClient
 PromiseDao o-- OrderManipulationAuthorityClient
 OrderDao o-- OrderManipulationAuthorityClient
-
+OrderResult <.. OrderManipulationAuthorityClient
+OrderDao <.. OrderResult
+PromiseDao <.. OrderResult
+OrderItem -* Order
+Order --* OrderDao
+Order .> GetPromiseHistoryByOrderIdActivity
+OrderManipulationAuthorityClient .> OrderResultItem
+PromiseDao <.. OrderResultItem
+Promise <.. DeliveryPromiseServiceClient
+Promise .> PromiseDao
+Promise <.. PromiseDao
+GetPromiseHistoryByOrderIdActivity <. Promise
+PromiseHistory <. GetPromiseHistoryByOrderIdActivity
+PromiseHistoryClient <. PromiseHistory
 
 @enduml
