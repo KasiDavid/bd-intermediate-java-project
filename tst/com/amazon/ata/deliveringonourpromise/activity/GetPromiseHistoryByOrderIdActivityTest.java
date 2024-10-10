@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -43,13 +42,15 @@ public class GetPromiseHistoryByOrderIdActivityTest {
     }
 
     @Test
-    public void getPromiseHistoryByOrderId_nullOrder_throwsException() {
+    public void getPromiseHistoryByOrderId_nullOrder_returnsPromiseWithNullOrder() {
         // GIVEN
         String orderId = "111-749023-7630574";
 
-        // WHEN + THEN
-        // (This is where the null pointer exception gets generated initially. After fixing the bug, the exception becomes an IllegalArgumentException)
-        assertThrows(IllegalArgumentException.class, () -> activity.getPromiseHistoryByOrderId(orderId));
+        // WHEN
+        PromiseHistory history = activity.getPromiseHistoryByOrderId(orderId);
+
+        // (This is where the null pointer exception gets generated initially before fixing the bug.)
+        assertNull(history.getOrder(), "Expected method to return promise with null order when order is null");
     }
 
     @Test

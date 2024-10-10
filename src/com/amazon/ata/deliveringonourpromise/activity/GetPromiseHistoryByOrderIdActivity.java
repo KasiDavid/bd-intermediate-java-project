@@ -43,7 +43,7 @@ public class GetPromiseHistoryByOrderIdActivity {
 
         //FIXME include code to account for when orderIsnull
         if (null == order) {
-            throw new IllegalArgumentException("There's something wrong with the order. Try confirming that the Id is correct");
+            return new PromiseHistory(order);
         }
         List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
         OrderItem customerOrderItem = null;
