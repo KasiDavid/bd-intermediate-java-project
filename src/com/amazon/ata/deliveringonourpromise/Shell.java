@@ -60,12 +60,21 @@ public class Shell {
         Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
-        try {
-            do {
-                System.out.println(shell.handleUserRequest());
-            } while (shell.userHasAnotherRequest());
-        } catch (Exception e) {
-            System.out.println("Error encountered. Exiting.");
+        int attemptCounts = 1;
+
+        while(attemptCounts > 0) {
+            try {
+                do {
+                    System.out.println(shell.handleUserRequest());
+                } while (shell.userHasAnotherRequest());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e);
+                continue;
+            } catch (Exception e) {
+                System.out.println("Error encountered. Exiting.");
+                continue;
+            }
+            attemptCounts = 0;
         }
 
         System.out.println("Thank you for using the Promise History CLI. Have a great day!\n\n");

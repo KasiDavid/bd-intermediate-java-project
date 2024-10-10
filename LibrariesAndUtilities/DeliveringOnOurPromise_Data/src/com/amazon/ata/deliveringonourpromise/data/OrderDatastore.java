@@ -66,6 +66,7 @@ public final class OrderDatastore {
         ensureDataPopulated();
 
         // return null if malformed
+
         if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
             return null;
         }

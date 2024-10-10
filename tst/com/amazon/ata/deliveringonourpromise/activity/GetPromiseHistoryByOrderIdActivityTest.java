@@ -43,6 +43,16 @@ public class GetPromiseHistoryByOrderIdActivityTest {
     }
 
     @Test
+    public void getPromiseHistoryByOrderId_nullOrder_throwsException() {
+        // GIVEN
+        String orderId = "111-749023-7630574";
+
+        // WHEN + THEN
+        // (This is where the null pointer exception gets generated initially. After fixing the bug, the exception becomes an IllegalArgumentException)
+        assertThrows(IllegalArgumentException.class, () -> activity.getPromiseHistoryByOrderId(orderId));
+    }
+
+    @Test
     public void getPromiseHistoryByOrderId_orderWithDpsPromise_returnsDpsPromise() {
         // GIVEN - an order that hasn't shipped yet but should return a DPS promise
         String orderId = "900-3746401-0000001";

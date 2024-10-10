@@ -41,6 +41,10 @@ public class GetPromiseHistoryByOrderIdActivity {
 
         Order order = orderDao.get(orderId);
 
+        //FIXME include code to account for when orderIsnull
+        if (null == order) {
+            throw new IllegalArgumentException("There's something wrong with the order. Try confirming that the Id is correct");
+        }
         List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
         OrderItem customerOrderItem = null;
         if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
