@@ -31,13 +31,13 @@ import java.util.List;
  * * orderDate: the timestamp of when the order was placed
  */
 public class Order {
-    public String orderId;
-    public String customerId;
-    public String marketplaceId;
-    public OrderCondition condition;
-    public List<OrderItem> customerOrderItemList = new ArrayList<>();
-    public String shipOption;
-    public ZonedDateTime orderDate;
+    private String orderId;
+    private String customerId;
+    private String marketplaceId;
+    private OrderCondition condition;
+    private List<OrderItem> customerOrderItemList = new ArrayList<>();
+    private String shipOption;
+    private ZonedDateTime orderDate;
 
     private Order() { }
 
@@ -71,7 +71,17 @@ public class Order {
      * @return a list containing all of the order items in this order
      */
     public List<OrderItem> getCustomerOrderItemList() {
-        return customerOrderItemList;
+        List<OrderItem> copies = new ArrayList<>(customerOrderItemList.size());
+        for (int i =0; i<customerOrderItemList.size() ; i++) {
+//            if (customerOrderItemList.get(i) == null) {
+//                continue;
+//            }
+//            OrderItem orderItem = OrderItem.builder()
+//                    .withOrderId(customerOrderItemList.get(i).getOrderId())
+//                    .build();
+            copies.add(i,customerOrderItemList.get(i));
+        }
+        return copies;
     }
 
     public String getShipOption() {
@@ -137,7 +147,24 @@ public class Order {
          * @return updated Builder
          */
         public Builder withCustomerOrderItemList(List<OrderItem> customerOrderItemList) {
-            this.customerOrderItemList = customerOrderItemList;
+            List<OrderItem> copies = new ArrayList<>(customerOrderItemList.size());
+            for (int i =0; i<customerOrderItemList.size() ; i++) {
+                if (customerOrderItemList.get(i) == null) {
+                    continue;
+                }
+                OrderItem orderItem = OrderItem.builder()
+                        .withCustomerOrderItemId(customerOrderItemList.get(i).getCustomerOrderItemId())
+                        .withOrderId(customerOrderItemList.get(i).getOrderId())
+                        .withAsin(customerOrderItemList.get(i).getAsin())
+                        .withConfidence(customerOrderItemList.get(i).getConfidence())
+                        .withQuantity(customerOrderItemList.get(i).getQuantity())
+                        .withTitle(customerOrderItemList.get(i).getTitle())
+                        .withMerchantId(customerOrderItemList.get(i).getMerchantId())
+                        .withIsConfidenceTracked(customerOrderItemList.get(i).isConfidenceTracked())
+                        .build();
+                copies.add(i,orderItem);
+            }
+            this.customerOrderItemList = copies;
             return this;
         }
 
