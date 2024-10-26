@@ -73,12 +73,6 @@ public class Order {
     public List<OrderItem> getCustomerOrderItemList() {
         List<OrderItem> copies = new ArrayList<>(customerOrderItemList.size());
         for (int i = 0; i < customerOrderItemList.size() ; i++) {
-//            if (customerOrderItemList.get(i) == null) {
-//                continue;
-//            }
-//            OrderItem orderItem = OrderItem.builder()
-//                    .withOrderId(customerOrderItemList.get(i).getOrderId())
-//                    .build();
             copies.add(i, customerOrderItemList.get(i));
         }
         return copies;
