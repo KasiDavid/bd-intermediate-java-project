@@ -72,14 +72,14 @@ public class Order {
      */
     public List<OrderItem> getCustomerOrderItemList() {
         List<OrderItem> copies = new ArrayList<>(customerOrderItemList.size());
-        for (int i =0; i<customerOrderItemList.size() ; i++) {
-//            if (customerOrderItemList.get(i) == null) {
-//                continue;
-//            }
-//            OrderItem orderItem = OrderItem.builder()
-//                    .withOrderId(customerOrderItemList.get(i).getOrderId())
-//                    .build();
-            copies.add(i,customerOrderItemList.get(i));
+        for (int i = 0; i <customerOrderItemList.size() ; i++) {
+    //            if (customerOrderItemList.get(i) == null) {
+    //                continue;
+    //            }
+    //            OrderItem orderItem = OrderItem.builder()
+    //                    .withOrderId(customerOrderItemList.get(i).getOrderId())
+    //                    .build();
+    //            copies.add(i, customerOrderItemList.get(i));
         }
         return copies;
     }
@@ -148,7 +148,7 @@ public class Order {
          */
         public Builder withCustomerOrderItemList(List<OrderItem> customerOrderItemList) {
             List<OrderItem> copies = new ArrayList<>(customerOrderItemList.size());
-            for (int i =0; i<customerOrderItemList.size() ; i++) {
+            for (int i = 0; i < customerOrderItemList.size() ; i++) {
                 if (customerOrderItemList.get(i) == null) {
                     continue;
                 }
@@ -162,7 +162,7 @@ public class Order {
                         .withMerchantId(customerOrderItemList.get(i).getMerchantId())
                         .withIsConfidenceTracked(customerOrderItemList.get(i).isConfidenceTracked())
                         .build();
-                copies.add(i,orderItem);
+                copies.add(i, orderItem);
             }
             this.customerOrderItemList = copies;
             return this;
