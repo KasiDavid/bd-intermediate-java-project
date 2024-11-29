@@ -10,27 +10,27 @@ What's the problem with the way the PromiseDao currently works?
 
 What ways will the CS representatives use the new multiple-client PromiseDao?
 
-- 
+- The CS rep can receive promises from multiple services, and update the promise list with the new promises.
 
 In a few sentences, how does the PromiseDao work right now?
 
-- 
+- The PromiseDAO retrieves the expected delivery from the customer order, and if the DPS for that order is not null, it assigns the dps date to the retrieved date. After this, it updates the list of promises with the updated dps object.
 
 Consider a developer unfamiliar with the Missed Promise CLI. Can you add diagrams here that will help them understand how the PromiseDao works right now?
 
-- 
+- Sure, I can add some diagrams.
 
 ## Proposed Solution
 
 Describe in a few sentences how your changes will satisfy the use cases you listed above. How will you enable getting promises from OFS? How will you allow new promise sources to be added easily in the future?
 
-- 
+- I will implement a generic promise interface that allows any type of promise be added to the promise list. The interface would need a method that returns a promise.
 
 ## Out of Scope
 
 Consider a reviewer who misunderstands this design and believes you're going to make the PromiseDao perfect. What are you not going to do? 
 
-- 
+- It is not able to type check. 
 
 ## Details
 
