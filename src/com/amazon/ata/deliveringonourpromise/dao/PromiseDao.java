@@ -4,7 +4,6 @@ import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryProm
 import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.OrderFulfillmentServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
-import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.ordermanipulationauthority.OrderResult;
 import com.amazon.ata.ordermanipulationauthority.OrderResultItem;
 import com.amazon.ata.ordermanipulationauthority.OrderShipment;
@@ -27,11 +26,15 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
     public PromiseDao(DeliveryPromiseServiceClient dpsClient, OrderManipulationAuthorityClient omaClient) {
-        insertClients(dpsClient);
+        this.psClients.add(dpsClient);
         this.omaClient = omaClient;
     }
 
-    public <T> void insertClients(T psClient){
+    /**
+     * PromiseDao method, accepting service clients of all types.
+     * @param psClient generic object for DAO to update List of clients
+     */
+    public <T> void insertClients(T psClient) {
         if (!psClients.contains(psClient)) {
             this.psClients.add(psClient);
         }

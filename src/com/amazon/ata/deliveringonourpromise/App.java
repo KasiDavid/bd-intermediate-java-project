@@ -38,6 +38,11 @@ public class App {
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
+
+    /**
+     * Fetch a new PromiseDAO with all of its clients loaded for use in the PromiseHistory!
+     * @return fully loaded PromiseDAO, ready for extracting promises!
+     */
     public static PromiseDao getPromiseDao() {
         PromiseDao promiseDao = new PromiseDao(getDeliveryPromiseServiceClient(),
                 getOrderManipulationAuthorityClient());
@@ -64,7 +69,7 @@ public class App {
         return new DeliveryPromiseService(getOrderDatastore());
     }
     public static OrderFulfillmentService getOrderFulfillmentService() {
-        return new OrderFulfillmentService(getOrderDatastore(),getDeliveryPromiseService());
+        return new OrderFulfillmentService(getOrderDatastore(), getDeliveryPromiseService());
     }
 
     // sample data
