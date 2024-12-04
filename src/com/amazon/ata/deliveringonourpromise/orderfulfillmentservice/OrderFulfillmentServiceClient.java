@@ -27,21 +27,21 @@ public class OrderFulfillmentServiceClient {
      * @param customerOrderItemId String representing the order item ID to fetch the order for.
      * @return the Promise for the given order item ID.
      */
-    public Promise getDeliveryPromiseByOrderItemId(String customerOrderItemId) {
-        OrderPromise deliveryPromise = ofService.getOrderPromise(customerOrderItemId);
+    public Promise getOrderFulfillmentPromiseByOrderItemId(String customerOrderItemId) {
+        OrderPromise ofPromise = ofService.getOrderPromise(customerOrderItemId);
 
-        if (null == deliveryPromise) {
+        if (null == ofPromise) {
             return null;
         }
 
         return Promise.builder()
-                .withPromiseLatestArrivalDate(deliveryPromise.getPromiseLatestArrivalDate())
-                .withCustomerOrderItemId(deliveryPromise.getCustomerOrderItemId())
-                .withPromiseLatestShipDate(deliveryPromise.getPromiseLatestShipDate())
-                .withPromiseEffectiveDate(deliveryPromise.getPromiseEffectiveDate())
-                .withIsActive(deliveryPromise.isActive())
-                .withPromiseProvidedBy(deliveryPromise.getPromiseProvidedBy())
-                .withAsin(deliveryPromise.getAsin())
+                .withPromiseLatestArrivalDate(ofPromise.getPromiseLatestArrivalDate())
+                .withCustomerOrderItemId(ofPromise.getCustomerOrderItemId())
+                .withPromiseLatestShipDate(ofPromise.getPromiseLatestShipDate())
+                .withPromiseEffectiveDate(ofPromise.getPromiseEffectiveDate())
+                .withIsActive(ofPromise.isActive())
+                .withPromiseProvidedBy(ofPromise.getPromiseProvidedBy())
+                .withAsin(ofPromise.getAsin())
                 .build();
     }
 }

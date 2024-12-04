@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
-    private final Object dpsClient;
+    private final List<Object> psClients = new ArrayList<>();
     private OrderManipulationAuthorityClient omaClient;
 
     /**
@@ -26,9 +26,15 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
      * @param dpsClient DeliveryPromiseServiceClient for DAO to access DPS
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public <T> PromiseDao(T dpsClient, OrderManipulationAuthorityClient omaClient) {
-        this.dpsClient = dpsClient;
+    public PromiseDao(DeliveryPromiseServiceClient dpsClient, OrderManipulationAuthorityClient omaClient) {
+        insertClients(dpsClient);
         this.omaClient = omaClient;
+    }
+
+    public <T> void insertClients(T psClient){
+        if (!psClients.contains(psClient)) {
+            this.psClients.add(psClient);
+        }
     }
 
     /**
@@ -45,19 +51,21 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
 
         // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
         // Set delivery date
-        if (dpsClient instanceof DeliveryPromiseServiceClient) {
-            DeliveryPromiseServiceClient psClient = (DeliveryPromiseServiceClient) dpsClient;
-            Promise dpsPromise = psClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-            if (dpsPromise != null) {
-                dpsPromise.setDeliveryDate(itemDeliveryDate);
-                promises.add(dpsPromise);
-            }
-        } else if (dpsClient instanceof OrderFulfillmentServiceClient) {
-            OrderFulfillmentServiceClient psClient = (OrderFulfillmentServiceClient) dpsClient;
-            Promise dpsPromise = psClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-            if (dpsPromise != null) {
-                dpsPromise.setDeliveryDate(itemDeliveryDate);
-                promises.add(dpsPromise);
+        for (Object client : psClients) {
+            if (client instanceof DeliveryPromiseServiceClient) {
+                DeliveryPromiseServiceClient psClient = (DeliveryPromiseServiceClient) client;
+                Promise dpsPromise = psClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
+                if (dpsPromise != null) {
+                    dpsPromise.setDeliveryDate(itemDeliveryDate);
+                    promises.add(dpsPromise);
+                }
+            } else if (client instanceof OrderFulfillmentServiceClient) {
+                OrderFulfillmentServiceClient psClient = (OrderFulfillmentServiceClient) client;
+                Promise ofsPromise = psClient.getOrderFulfillmentPromiseByOrderItemId(customerOrderItemId);
+                if (ofsPromise != null) {
+                    ofsPromise.setDeliveryDate(itemDeliveryDate);
+                    promises.add(ofsPromise);
+                }
             }
         }
         return promises;

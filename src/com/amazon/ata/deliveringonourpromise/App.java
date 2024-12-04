@@ -39,14 +39,10 @@ public class App {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
     public static PromiseDao getPromiseDao() {
-        return new PromiseDao(getDeliveryPromiseServiceClient(),
-                              getOrderManipulationAuthorityClient()
-        );
-    }
-    public static PromiseDao getOFSPromiseDao() {
-        return new PromiseDao(getOrderFulfillmentServiceClient(),
-                getOrderManipulationAuthorityClient()
-        );
+        PromiseDao promiseDao = new PromiseDao(getDeliveryPromiseServiceClient(),
+                getOrderManipulationAuthorityClient());
+        promiseDao.insertClients(getOrderFulfillmentServiceClient());
+        return promiseDao;
     }
 
     // service clients
