@@ -25,7 +25,7 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
      * @param dpsClient DeliveryPromiseServiceClient for DAO to access DPS
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public PromiseDao(DeliveryPromiseServiceClient dpsClient, OrderManipulationAuthorityClient omaClient) {
+    public <T> PromiseDao(T dpsClient, OrderManipulationAuthorityClient omaClient) {
         this.psClients.add(dpsClient);
         this.omaClient = omaClient;
     }
@@ -33,6 +33,7 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
     /**
      * PromiseDao method, accepting service clients of all types.
      * @param psClient generic object for DAO to update List of clients
+     * @param <T> generic type to allow any type of object.
      */
     public <T> void insertClients(T psClient) {
         if (!psClients.contains(psClient)) {
