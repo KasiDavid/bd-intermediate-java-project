@@ -30,6 +30,11 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
         this.psClients.add(dpsClient);
         this.omaClient = omaClient;
     }
+    public <T,U> PromiseDao(T dpsClient, U ofsClient, OrderManipulationAuthorityClient omaClient) {
+        this.psClients.add(dpsClient);
+        this.psClients.add(ofsClient);
+        this.omaClient = omaClient;
+    }
 
     /**
      * PromiseDao method, accepting service clients of all types.
@@ -66,7 +71,7 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
                 }
             } else if (client instanceof OrderFulfillmentServiceClient) {
                 OrderFulfillmentServiceClient psClient = (OrderFulfillmentServiceClient) client;
-                Promise ofsPromise = psClient.getOrderFulfillmentPromiseByOrderItemId(customerOrderItemId);
+                Promise ofsPromise = psClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
                 if (ofsPromise != null) {
                     ofsPromise.setDeliveryDate(itemDeliveryDate);
                     promises.add(ofsPromise);
