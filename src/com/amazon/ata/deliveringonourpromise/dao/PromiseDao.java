@@ -29,12 +29,14 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
         this.psClients.add(dpsClient);
         this.omaClient = omaClient;
     }
-    public PromiseDao(OrderFulfillmentServiceClient ofsClient, OrderManipulationAuthorityClient omaClient) {
-        this.psClients.add(ofsClient);
-        this.omaClient = omaClient;
-    }
-    public PromiseDao(List<Object> T, OrderManipulationAuthorityClient omaClient) {
-        for (Object client :T) {
+
+    /**
+     * PromiseDao constructor, accepting service clients for lists.
+     * @param clients list of objects for accepting list of promise clients
+     * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
+     */
+    public PromiseDao(List<Object> clients, OrderManipulationAuthorityClient omaClient) {
+        for (Object client : clients) {
             this.psClients.add(client);
         }
         this.omaClient = omaClient;
