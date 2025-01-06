@@ -2,7 +2,6 @@ package com.amazon.ata.deliveringonourpromise.orderfulfillmentservice;
 
 import com.amazon.ata.deliveringonourpromise.dao.Client;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
-import com.amazon.ata.deliverypromiseservice.service.DeliveryPromise;
 import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.orderfulfillmentservice.OrderPromise;
 
