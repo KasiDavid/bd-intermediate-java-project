@@ -54,6 +54,35 @@ public class GetPromiseHistoryByOrderIdActivityTest {
     }
 
     @Test
+    public void getPromiseHistoryByOrderId_listOfPromises_returnsSortedPromiseHistory() {
+        // GIVEN
+        String orderId = "900-3746403-0000002";
+
+        // WHEN
+        PromiseHistory history = activity.getPromiseHistoryByOrderId(orderId);
+        List<Promise> promises = history.getPromises();
+
+
+        // THEN
+        boolean isSorted = false;
+        if (promises.size() < 2) {
+            isSorted = true;
+        }
+        for (int i =0; i < promises.size()-1; i++) {
+            if (!(promises.get(i).getAsin().compareTo(promises.get(i+1).getAsin()) > 0)) {
+                isSorted = true;
+            }
+        }
+        assertTrue(isSorted,
+                String.format("Expected method to return promises sorted in ascending order by ASIN" +
+                        " for order ID '%s', but promises were: %s",
+                orderId,
+                history.getPromises().toString()
+                )
+        );
+    }
+
+    @Test
     public void getPromiseHistoryByOrderId_orderWithDpsPromise_returnsDpsPromise() {
         // GIVEN - an order that hasn't shipped yet but should return a DPS promise
         String orderId = "900-3746401-0000001";
