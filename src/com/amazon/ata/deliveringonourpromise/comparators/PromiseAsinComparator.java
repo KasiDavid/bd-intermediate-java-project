@@ -10,7 +10,7 @@ public class PromiseAsinComparator implements Comparator<Promise> {
         if (p1.equals(p2)) {
             return 0;
         } else {
-            return (p1.getAsin().compareTo(p2.getAsin()));
+            return p1.getAsin().compareTo(p2.getAsin());
         }
     }
 }

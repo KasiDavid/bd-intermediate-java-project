@@ -50,11 +50,9 @@ public class GetPromiseHistoryByOrderIdActivity {
         }
         PromiseHistory history = new PromiseHistory(order);
         List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
-        OrderItem customerOrderItem;
         List<Promise> tempPromises = new ArrayList<>();
         if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-            for (int i = 0; i <= customerOrderItems.size()-1; i++) {
-                customerOrderItem = customerOrderItems.get(i);
+            for (OrderItem customerOrderItem : customerOrderItems) {
                 if (customerOrderItem != null) {
                     List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
                     for (Promise promise : promises) {
